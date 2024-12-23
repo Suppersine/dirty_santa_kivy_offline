@@ -1,5 +1,7 @@
 import random
 import time
+import sys
+import os
 from kivy.clock import Clock
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -246,7 +248,16 @@ class PlayerListerScreen(Screen):
             self.update_player_list()
             self.update_buttons()
 
-kv = Builder.load_file('main_menu.kv')
+#kv = Builder.load_file('main_menu.kv')
+
+if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller bundle
+    # If running as a bundle, use the path to the executable
+    kv_file = os.path.join(sys._MEIPASS, 'main_menu.kv')
+else:
+    # If running in a normal Python environment, use the current directory
+    kv_file = 'main_menu.kv'
+
+Builder.load_file(kv_file)
 
 class HelloApp(App):
     def build(self):
