@@ -1,0 +1,261 @@
+ScreenManager:
+    SplashScreen:
+    MainMenuScreen:
+    InstructionsScreen:
+    PlayerListerScreen:
+    AddPlayerScreen:
+    RenamePlayerScreen:
+    GameplayScreen:
+
+<SplashScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.14, 0.14, 1  # Scarlet Red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Image:
+            source: 'images/applogo.png'
+            allow_stretch: True
+            keep_ratio: False
+
+<MainMenuScreen>:
+    name: 'main_menu'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.14, 0.14, 1  # Scarlet Red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: 'Toggle Music'
+            size_hint_y: 1 / 16
+            pos_hint: {'top': 1}
+            on_release: app.toggle_music()
+        BoxLayout:
+            size_hint_y: 9 / 16
+            Image:
+                source: 'images/santas.png'
+                allow_stretch: True
+                keep_ratio: True
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: 6 / 16
+            text: 'Dirty Santa Offline'
+            Button:
+                text: 'New Game'
+                size_hint_y: None
+                height: '48dp'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: app.start_new_game()
+            Button:
+                text: 'Instructions'
+                size_hint_y: None
+                height: '48dp'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: app.show_instructions()
+            Button:
+                text: 'Quit'
+                size_hint_y: None
+                height: '48dp'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: app.quit_game()
+
+<InstructionsScreen>:
+    name: 'instructions'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.14, 0.14, 1  # Scarlet Red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: 'Toggle Music'
+            size_hint_y: 1 / 16
+            pos_hint: {'top': 1}
+            on_release: app.toggle_music()
+        Image:
+            source: 'images/Gift_Box_Pile.png'
+            size_hint_y: 7 / 16
+            height: '200dp'
+        Label:
+            text: "Welcome to Dirty Santa!\n\nInstructions:\n1. Each player brings a wrapped gift.\n2. Players draw numbers to determine the order of gift selection.\n3. The first player selects a gift and opens it.\n4. Subsequent players can either choose a new gift or steal an opened gift.\n5. If a player's gift is stolen, they can choose another unopened gift or steal from another player.\n6. A gift can only be stolen once per turn.\n7. The game continues until all gifts are opened.\n\nHave fun!"
+            size_hint_y: 7 / 16
+            height: self.texture_size[1]
+        Button:
+            text: 'Back'
+            size_hint_y: 1 / 16
+            height: '48dp'
+            background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+            on_press: root.manager.current = 'main_menu'
+
+<PlayerListerScreen>:
+    name: 'player_lister'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.14, 0.14, 1  # Scarlet Red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: 'Toggle Music'
+            size_hint: (0.2, 0.1)
+            pos_hint: {'top': 1}
+            on_release: app.toggle_music()
+        BoxLayout:
+            orientation: 'horizontal'
+            RecycleView:
+                id: player_list
+                viewclass: 'SelectableLabel'
+                RecycleBoxLayout:
+                    default_size: None, dp(56)
+                    default_size_hint: 1, None
+                    size_hint_y: None
+                    height: self.minimum_height
+                    orientation: 'vertical'
+                    canvas.before:
+                        Color:
+                            rgba: 1, 0.84, 0, 1  # Gold-yellow
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    text: 'Selected Player:'
+                Label:
+                    id: selected_player_label
+                    text: root.selected_player if root.selected_player else 'None'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            TextInput:
+                id: player_number_input
+                hint_text: 'Enter player number'
+            Button:
+                text: 'Select Number'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: root.select_player_by_number(int(player_number_input.text))
+            Button:
+                text: 'Add player'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: root.manager.current = 'add_player'
+            Button:
+                id: delete_player_btn
+                text: 'Delete player'
+                disabled: True
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: root.delete_player()
+            Button:
+                id: rename_player_btn
+                text: 'Rename player'
+                disabled: True
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: root.manager.current = 'rename_player'
+            Button:
+                id: start_game_btn
+                text: 'Start Game!'
+                disabled: True
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: app.start_game()
+            Button:
+                text: 'Back'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_press: root.manager.current = 'main_menu'
+
+<AddPlayerScreen>:
+    name: 'add_player'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.86, 0.08, 0.24, 1  # Crimson red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        TextInput:
+            id: player_name_input
+            hint_text: 'Enter new player name'
+        Button:
+            text: 'Add'
+            background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+            on_press: root.add_player(player_name_input.text)
+        Button:
+            text: 'Back'
+            background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+            on_press: root.manager.current = 'player_lister'
+
+<RenamePlayerScreen>:
+    name: 'rename_player'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.86, 0.08, 0.24, 1  # Crimson red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        TextInput:
+            id: new_player_name_input
+            hint_text: 'Enter new player name'
+        Button:
+            text: 'Rename'
+            background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+            on_press: root.rename_player(new_player_name_input.text)
+        Button:
+            text: 'Back'
+            background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+            on_press: root.manager.current = 'player_lister'
+
+<GameplayScreen>:
+    name: 'gameplay'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 1, 0.14, 0.14, 1  # Scarlet Red
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Button:
+            text: 'Toggle Music'
+            size_hint: (0.2, 0.1)
+            pos_hint: {'top': 1}
+            on_release: app.toggle_music()
+        Label:
+            id: game_status_label
+            text: root.game_status
+        BoxLayout:
+            orientation: 'vertical'
+            Button:
+                id: pause_timer_btn
+                text: 'Pause Timer'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_release: root.handle_pause_timer()
+            Button:
+                id: resume_timer_btn
+                text: 'Resume Timer'
+                background_color: 0.31, 0.78, 0.47, 1  # Emerald green
+                on_release: root.handle_resume_timer()
+
+<SelectableLabel>:
+    canvas.before:
+        Color:
+            rgba: (1, 0.84, 0, 1) if self.selected else (1, 0.84, 0, 1)  # Gold-yellow
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    color: (0, 0, 0, 1)  # Black text
