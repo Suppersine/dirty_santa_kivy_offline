@@ -1,5 +1,5 @@
 # dirty_santa_kivy_offline
-A UI-featured Gift Exchange Simulator designed to run across all platforms with strong android preferrence.
+A UI-featured Gift Exchange Simulator designed to run across all platforms with strong Android & Projection preferences.
 
 ![applogo](https://github.com/user-attachments/assets/f65576f7-748a-4262-b7d0-a2f605c5c6f0)
 
