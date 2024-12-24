@@ -1,0 +1,7 @@
+#open windows powershell or linux shell
+
+type:
+
+!git clone 
+!cd ..<folder parent dir>../dirty_santa_kivy_offline
+!python main.py
