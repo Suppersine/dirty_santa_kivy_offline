@@ -6,7 +6,7 @@ a = Analysis(
     ['main.py'],
     pathex=['C:\\Users\\Supasin\\Documents\\dirty_santa_kivy'],
     binaries=[],
-    datas=[('main_menu.kv', '.')],  # Include the main_menu.kv file
+    datas=[('main_menu.kv', '.'), ('images', 'images')],  # Include the main_menu.kv file and images directory
     hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
